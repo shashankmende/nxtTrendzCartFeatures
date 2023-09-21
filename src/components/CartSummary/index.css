@@ -1,0 +1,22 @@
+/* Write your CSS here */
+.cart-summary-container {
+  background-color: #ffffff;
+  font-family: 'Roboto';
+  align-self: flex-end;
+  width: 300px;
+}
+.order-total-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.checkOut-btn {
+  background-color: #0b69ff;
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+  border: none;
+
+  width: 100%;
+}
