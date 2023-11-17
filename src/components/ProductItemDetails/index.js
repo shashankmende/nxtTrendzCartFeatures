@@ -140,12 +140,9 @@ class ProductItemDetails extends Component {
             const popedProduct = isExist.pop()
             const {quantity} = popedProduct
 
-            this.setState(
-              {
-                pq: quantity,
-              },
-              this.renderProductDetailsView,
-            )
+            this.setState({
+              pq: quantity,
+            })
           }
 
           addCartItem({...productData, quantity: pq})
