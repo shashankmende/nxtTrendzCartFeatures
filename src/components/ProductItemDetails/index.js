@@ -23,7 +23,7 @@ class ProductItemDetails extends Component {
     productData: {},
     similarProductsData: [],
     apiStatus: apiStatusConstants.initial,
-    quantity: 1,
+    pq: 1,
   }
 
   componentDidMount() {
@@ -101,20 +101,20 @@ class ProductItemDetails extends Component {
   )
 
   onDecrementQuantity = () => {
-    const {quantity} = this.state
-    if (quantity > 1) {
-      this.setState(prevState => ({quantity: prevState.quantity - 1}))
+    const {pq} = this.state
+    if (pq > 1) {
+      this.setState(prevState => ({pq: prevState.pq - 1}))
     }
   }
 
   onIncrementQuantity = () => {
-    this.setState(prevState => ({quantity: prevState.quantity + 1}))
+    this.setState(prevState => ({pq: prevState.pq + 1}))
   }
 
   renderProductDetailsView = () => (
     <CartContext.Consumer>
       {value => {
-        const {productData, quantity, similarProductsData} = this.state
+        const {productData, pq, similarProductsData} = this.state
         const {
           availability,
           brand,
@@ -126,10 +126,29 @@ class ProductItemDetails extends Component {
 
           totalReviews,
         } = productData
-        console.log('quantity from product item details', quantity)
-        const {addCartItem} = value
+
+        const {addCartItem, cartList} = value
+        console.log('cart list from product item details', cartList)
         const onClickAddToCart = () => {
-          addCartItem({...productData, quantity})
+          const isExist = cartList.filter(each => {
+            if (each.id === productData.id) {
+              return true
+            }
+            return false
+          })
+          if (isExist.length !== 0) {
+            const popedProduct = isExist.pop()
+            const {quantity} = popedProduct
+
+            this.setState(
+              {
+                pq: quantity,
+              },
+              this.renderProductDetailsView,
+            )
+          }
+
+          addCartItem({...productData, quantity: pq})
         }
 
         return (
@@ -169,7 +188,7 @@ class ProductItemDetails extends Component {
                   >
                     <BsDashSquare className="quantity-controller-icon" />
                   </button>
-                  <p className="quantity">{quantity}</p>
+                  <p className="quantity">{pq}</p>
                   <button
                     type="button"
                     className="quantity-controller-button"
@@ -219,6 +238,7 @@ class ProductItemDetails extends Component {
   }
 
   render() {
+    console.log('state from product item details', this.state)
     return (
       <>
         <Header />

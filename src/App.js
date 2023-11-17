@@ -16,9 +16,16 @@ let isExist = []
 class App extends Component {
   state = {
     cartList: [],
+    paymentOption: false,
   }
 
   //   TODO: Add your code for remove all cart items, increment cart item quantity, decrement cart item quantity, remove cart item
+
+  updatePaymentMethod = () => {
+    this.setState({
+      paymentOption: true,
+    })
+  }
 
   addCartItem = product => {
     console.log('product=', product)
@@ -29,13 +36,17 @@ class App extends Component {
       }
       return false
     })
+    console.log('is exist list=', isExist)
     if (isExist.length !== 0) {
       const productInIsExist = cartList.pop()
-      isExist = []
+
       const {quantity} = productInIsExist
+
       const updatedQuantity = quantity + 1
+      console.log('updated quantity//////******', updatedQuantity)
 
       const newProduct = {...product, quantity: updatedQuantity}
+      isExist = []
       this.setState(prevState => ({
         cartList: [...prevState.cartList, newProduct],
       }))
@@ -85,17 +96,19 @@ class App extends Component {
   }
 
   render() {
-    const {cartList} = this.state
-    console.log('cartlist from render', cartList)
+    const {cartList, paymentOption} = this.state
+    console.log('cart list=', cartList)
     return (
       <CartContext.Provider
         value={{
           cartList,
+          paymentOption,
           addCartItem: this.addCartItem,
           removeCartItem: this.removeCartItem,
           incrementCartItemQuantity: this.incrementCartItemQuantity,
           decrementCartItemQuantity: this.decrementCartItemQuantity,
           removeAllCartItems: this.removeAllCartItems,
+          updatePaymentMethod: this.updatePaymentMethod,
         }}
       >
         <Switch>
